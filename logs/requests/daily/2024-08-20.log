@@ -1,0 +1,26 @@
+info: ::1 - - [20/Aug/2024:10:01:09 +0000] "POST /api/v1/users/forget-password HTTP/1.1" 404 28 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [20/Aug/2024:10:06:21 +0000] "POST /api/v1/users/forget-password HTTP/1.1" 404 28 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [20/Aug/2024:10:06:31 +0000] "POST /api/v1/users/forget-password HTTP/1.1" 404 28 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [20/Aug/2024:10:08:38 +0000] "POST /api/v1/users/forget-password HTTP/1.1" 404 28 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [20/Aug/2024:10:08:41 +0000] "POST /api/v1/users/forget-password HTTP/1.1" 404 28 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [20/Aug/2024:10:18:01 +0000] "POST /api/v1/users/forget-password HTTP/1.1" 200 44 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [20/Aug/2024:10:20:04 +0000] "POST /api/v1/users/forget-password HTTP/1.1" 200 85 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [20/Aug/2024:10:20:19 +0000] "GET /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImlhdCI6MTcyNDE0OTIwMiwiZXhwIjoxNzI0MTUyODAyfQ.4Vdto0Pe5pVwnNGL7BP9d6T4BgFkVIqKIjcQCf5ttHA HTTP/1.1" 404 47 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+
+info: ::1 - - [20/Aug/2024:10:20:21 +0000] "GET /favicon.ico HTTP/1.1" 404 47 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+
+info: ::1 - - [20/Aug/2024:10:21:50 +0000] "POST /api/v1/users/reset-password HTTP/1.1" 200 52 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [20/Aug/2024:10:23:26 +0000] "GET /api/v1/users/login HTTP/1.1" 404 47 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [20/Aug/2024:10:23:55 +0000] "POST /api/v1/users/login HTTP/1.1" 200 329 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [20/Aug/2024:10:42:18 +0000] "POST /api/v1/users/signup HTTP/1.1" 201 291 "-" "PostmanRuntime/7.41.1"
+

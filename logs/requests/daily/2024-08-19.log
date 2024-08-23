@@ -1,0 +1,8 @@
+info: ::1 - - [19/Aug/2024:06:25:49 +0000] "POST /api/v1/users/login HTTP/1.1" 200 315 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [19/Aug/2024:06:37:16 +0000] "POST /api/v1/users/forget-password HTTP/1.1" 200 230 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [19/Aug/2024:06:38:11 +0000] "POST /api/v1/users/reset-password HTTP/1.1" 200 52 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [19/Aug/2024:06:39:02 +0000] "POST /api/v1/users/login HTTP/1.1" 200 324 "-" "PostmanRuntime/7.41.1"
+

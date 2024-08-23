@@ -1,0 +1,12 @@
+info: ::1 - - [16/Aug/2024:11:39:43 +0000] "POST /api/v1/users/login HTTP/1.1" 200 331 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [16/Aug/2024:11:40:49 +0000] "POST /api/v1/notes/create HTTP/1.1" 201 184 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [16/Aug/2024:11:41:18 +0000] "POST /api/v1/notes/7/archive HTTP/1.1" 200 231 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [16/Aug/2024:11:41:34 +0000] "POST /api/v1/notes/6/archive HTTP/1.1" 200 282 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [16/Aug/2024:11:42:29 +0000] "POST /api/v1/notes/all HTTP/1.1" 404 47 "-" "PostmanRuntime/7.41.1"
+
+info: ::1 - - [16/Aug/2024:11:43:00 +0000] "GET /api/v1/notes/all HTTP/1.1" 200 820 "-" "PostmanRuntime/7.41.1"
+

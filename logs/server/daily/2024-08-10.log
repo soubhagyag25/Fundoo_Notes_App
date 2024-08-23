@@ -1,0 +1,32 @@
+info: Server started at http://localhost:5000/api/v1/ {"timestamp":"2024-08-10T10:17:11.085Z"}
+info: Connected to the database. {"timestamp":"2024-08-10T10:17:11.360Z"}
+error: 
+    status - 500 
+    message - Error: Error creating user
+    at UserService.<anonymous> (H:\Fundoo CRUD\src\services\user.service.ts:31:13)
+    at Generator.throw (<anonymous>)
+    at rejected (H:\Fundoo CRUD\src\services\user.service.ts:6:65)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5) 
+    url - /api/v1/users/create 
+    method - POST 
+    IP - ::ffff:127.0.0.1
+   {"timestamp":"2024-08-10T10:30:32.047Z"}
+info: Server started at http://localhost:5000/api/v1/ {"timestamp":"2024-08-10T10:53:53.868Z"}
+info: Connected to the database. {"timestamp":"2024-08-10T10:53:54.151Z"}
+info: Server started at http://localhost:5000/api/v1/ {"timestamp":"2024-08-10T10:56:51.698Z"}
+info: Connected to the database. {"timestamp":"2024-08-10T10:56:51.947Z"}
+error: 
+    status - 500 
+    message - Error: Error creating user
+    at UserService.<anonymous> (H:\Fundoo CRUD\src\services\user.service.ts:31:13)
+    at Generator.throw (<anonymous>)
+    at rejected (H:\Fundoo CRUD\src\services\user.service.ts:6:65)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5) 
+    url - /api/v1/users/create 
+    method - POST 
+    IP - ::ffff:127.0.0.1
+   {"timestamp":"2024-08-10T10:58:03.655Z"}
+info: Server started at http://localhost:5000/api/v1/ {"timestamp":"2024-08-10T11:09:47.129Z"}
+info: Connected to the database. {"timestamp":"2024-08-10T11:09:47.389Z"}
+info: Server started at http://localhost:5000/api/v1/ {"timestamp":"2024-08-10T11:39:13.830Z"}
+info: Connected to the database. {"timestamp":"2024-08-10T11:39:14.079Z"}

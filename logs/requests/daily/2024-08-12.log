@@ -1,0 +1,6 @@
+info: ::ffff:127.0.0.1 - - [12/Aug/2024:06:28:58 +0000] "POST /api/v1/users/create HTTP/1.1" 201 284 "-" "Thunder Client (https://www.thunderclient.com)"
+
+info: ::ffff:127.0.0.1 - - [12/Aug/2024:06:30:27 +0000] "POST /api/v1/users/create HTTP/1.1" 400 45 "-" "Thunder Client (https://www.thunderclient.com)"
+
+info: ::ffff:127.0.0.1 - - [12/Aug/2024:06:30:55 +0000] "POST /api/v1/users/login HTTP/1.1" 200 275 "-" "Thunder Client (https://www.thunderclient.com)"
+
