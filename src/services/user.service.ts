@@ -78,7 +78,8 @@ public findUserByEmail = async (email: string) => {
       { expiresIn: '1h' }
   );
   await sendEmail(user.email, reset_token,user.firstName);
-  return user;
+
+  return {reset_token};//returning it for testing purpose
 };
 
 //! Update user's password
