@@ -185,11 +185,5 @@ describe('Restoring a Note from the TRASH', () => {
       });
   });
 });
-
-
-
-
-
-
-  });
+});
 });
