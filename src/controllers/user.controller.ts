@@ -1,73 +1,42 @@
-//src>controllers>user.controller.ts
 import HttpStatus from 'http-status-codes';
 import userService from '../services/user.service';
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { UserDTO } from '../interfaces/user.dto';
-class UserController
- {
+
+class UserController {
   public UserService = new userService();
 
   //! Sign Up or creating a new user
-  public SignUp = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<any> => {
-  try {
-    console.log('Received body:', req.body); // Log received body
+  public SignUp = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+    try {
+      const data = await this.UserService.SignUp(req.body);
 
-    const { email, password } = req.body;
+      // Converting Sequelize model instance to a plain object and remove the password
+      const userData = data.toJSON();
+      delete userData.password;
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(HttpStatus.BAD_REQUEST).json({
-        code: HttpStatus.BAD_REQUEST,
-        message: 'Invalid email format',
+      res.status(HttpStatus.CREATED).json({
+        code: HttpStatus.CREATED,
+        data: userData,
+        message: 'User created successfully',
       });
+    } catch (error) {
+      console.error('Error during user creation:', error); // Log any errors
+      next(error);
     }
-
-    // Validate password length
-    if (password.length < 8) {
-      return res.status(HttpStatus.BAD_REQUEST).json({
-        code: HttpStatus.BAD_REQUEST,
-        message: 'Password must be at least 8 characters long',
-      });
-    }
-
-    // Proceed with user creation
-    const data = await this.UserService.SignUp(req.body);
-
-    // Convert Sequelize model instance to a plain object and remove password
-    const userData = data.toJSON();
-    delete userData.password;
-
-    res.status(HttpStatus.CREATED).json({
-      code: HttpStatus.CREATED,
-      data: userData,
-      message: 'User created successfully',
-    });
-  } catch (error) {
-    console.error('Error during user creation:', error); // Log any errors
-    next(error);
-  }
-}
+  };
 
   //! Login User
-  public loginUser = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<any> => {
+  public loginUser = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
       const { email, password } = req.body;
       const user: UserDTO = await this.UserService.loginUser(email, password);
-      // Generate JWT token
+
       res.status(HttpStatus.OK).json({
-      code: HttpStatus.OK,
-      data: user,
-      message: 'Login successful'
+        code: HttpStatus.OK,
+        data: user,
+        message: 'Login successful',
       });
     } catch (error) {
       res.status(HttpStatus.UNAUTHORIZED).json({
@@ -77,55 +46,46 @@ class UserController
     }
   };
 
-//! Forget Password 
-public forgetPassword = async (req: Request, res: Response) => {
-  const { email } = req.body;
+  //! Forget Password
+  public forgetPassword = async (req: Request, res: Response) => {
+    const { email } = req.body;
+    const user = await this.UserService.findUserByEmail(email);
 
-  // Check if user exists
-  const user = await this.UserService.findUserByEmail(email);
-  if (!user) {
-    return res.status(404).json({ message: 'User not found' });
-  }
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-  // return res.status(200).json({ message: 'Password reset token generated',
-  //   Message2:'Check your registered email'
-  // });
+    return res.status(200).json({
+      message: 'Password reset token generated',
+      data: user.reset_token,
+    });
+  };
 
-  return res.status(200).json(
-    { message: 'Password reset token generated',
-      data: user.reset_token });
-};
+  //! Reset Password Endpoint
+  public resetPasswordWithToken = async (req: Request, res: Response) => {
+    const authHeader = req.headers.authorization;
 
-//! Reset Password Endpoint
-public resetPasswordWithToken = async (req: Request, res: Response) => {
-  // Extract token from the Authorization header
-  const authHeader = req.headers.authorization;
-  
-  if (!authHeader) {
-    return res.status(400).json({ message: 'Authorization header missing' });
-  }
-  
-  // Assuming the format is "Bearer <token>"
-  const token = authHeader.split(' ')[1];
+    if (!authHeader) {
+      return res.status(400).json({ message: 'Authorization header missing' });
+    }
 
-  if (!token) {
-    return res.status(400).json({ message: 'Token missing' });
-  }
+    const token = authHeader.split(' ')[1];
 
-  const { newPassword } = req.body;
+    if (!token) {
+      return res.status(400).json({ message: 'Token missing' });
+    }
 
-  try {
-    // Verify the token
-    const decoded: any = jwt.verify(token, process.env.RESET_SECRET_KEY!);
+    const { newPassword } = req.body;
 
-    // Update user's password
-    await this.UserService.updateUserPassword(decoded.id, newPassword);
+    try {
+      const decoded: any = jwt.verify(token, process.env.RESET_SECRET_KEY!);
+      await this.UserService.updateUserPassword(decoded.id, newPassword);
 
-    return res.status(200).json({ message: 'Password has been changed successfully' });
-  } catch (error) {
-    return res.status(400).json({ message: 'Invalid or expired token' });
-  }
-};
+      return res.status(200).json({ message: 'Password has been changed successfully' });
+    } catch (error) {
+      return res.status(400).json({ message: 'Invalid or expired token' });
+    }
+  };
 }
 
 export default UserController;
