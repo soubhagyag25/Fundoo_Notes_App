@@ -15,11 +15,13 @@ class NoteController {
   
     try {
       const newNote = await this.noteService.createNote({
-        title,
-        description,
+       ...req.body,
         CreatedBy: userId,
       });
-      res.status(201).json(newNote);
+      res.status(201).json(
+        {message:"Note Created Successfully",
+          note: newNote,
+    });
     } catch (error) {
       res.status(500).json({ message: 'Error creating note', error });
     }

@@ -63,13 +63,11 @@ class UserController
     try {
       const { email, password } = req.body;
       const user: UserDTO = await this.UserService.loginUser(email, password);
-
       // Generate JWT token
-      
-
       res.status(HttpStatus.OK).json({
-        code: HttpStatus.OK,
-        data: user,message: 'Login successful'
+      code: HttpStatus.OK,
+      data: user,
+      message: 'Login successful'
       });
     } catch (error) {
       res.status(HttpStatus.UNAUTHORIZED).json({
@@ -88,9 +86,14 @@ public forgetPassword = async (req: Request, res: Response) => {
   if (!user) {
     return res.status(404).json({ message: 'User not found' });
   }
-  return res.status(200).json({ message: 'Password reset token generated',
-    Message2:'Check your registered email'
-  });
+
+  // return res.status(200).json({ message: 'Password reset token generated',
+  //   Message2:'Check your registered email'
+  // });
+
+  return res.status(200).json(
+    { message: 'Password reset token generated',
+      data: user.reset_token });
 };
 
 //! Reset Password Endpoint
