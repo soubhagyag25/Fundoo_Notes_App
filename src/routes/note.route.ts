@@ -1,7 +1,7 @@
 import express, { IRouter } from 'express';
 import NoteController from '../controllers/note.controller';
 import { userAuth } from '../middlewares/auth.middleware';
-import redisHelper from '../utils/redisHelper';
+import { getAllNotesCache, getArchivedNotesCache, getTrashedNotesCache } from '../middlewares/noteRedis.middleware';
 
 class NoteRoutes {
   private noteController = new NoteController();
@@ -31,28 +31,13 @@ class NoteRoutes {
     this.router.post('/:noteId/unarchive', userAuth, this.noteController.unarchiveNote);
 
     //! Route to Get all notes (Auth required)
-    this.router.get('/all', userAuth, async (req, res, next) => {
-      const cachedNotes = await redisHelper.get(`notes:${req.user.id}`);
-      if (cachedNotes) return res.json(cachedNotes);
-
-      next();
-    }, this.noteController.getAllNotes);
+    this.router.get('/all', userAuth, getAllNotesCache, this.noteController.getAllNotes);
 
     //! Route to get all archived notes (Auth required)
-    this.router.get('/archived', userAuth, async (req, res, next) => {
-      const cachedArchivedNotes = await redisHelper.get(`archivedNotes:${req.user.id}`);
-      if (cachedArchivedNotes) return res.json(cachedArchivedNotes);
-
-      next();
-    }, this.noteController.getArchivedNotes);
+    this.router.get('/archived', userAuth, getArchivedNotesCache, this.noteController.getArchivedNotes);
 
     //! Route to get all trashed notes (Auth required)
-    this.router.get('/trashed', userAuth, async (req, res, next) => {
-      const cachedTrashedNotes = await redisHelper.get(`trashedNotes:${req.user.id}`);
-      if (cachedTrashedNotes) return res.json(cachedTrashedNotes);
-
-      next();
-    }, this.noteController.getTrashedNotes);
+    this.router.get('/trashed', userAuth, getTrashedNotesCache, this.noteController.getTrashedNotes);
   };
 
   public getRoutes = (): IRouter => {
