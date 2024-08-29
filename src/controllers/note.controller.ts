@@ -26,7 +26,36 @@ class NoteController {
       res.status(500).json({ message: 'Error creating note', error });
     }
   };
-  
+  //! Update a note by ID
+  public updateNote = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const noteId = parseInt(req.params.noteId, 10);
+      if (isNaN(noteId)) {
+        return res.status(400).json({ message: 'Invalid note ID' });
+      }
+      
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({ message: 'Unauthorized' });
+      }
+      
+      const updatedNote = await this.noteService.updateNote(noteId, userId, req.body);
+      
+      if (!updatedNote) {
+        return res.status(404).json({ message: 'Note not found or not authorized' });
+      }
+      
+      res.status(200).json({ message: 'Note updated successfully', data: updatedNote });
+    } catch (error) {
+      console.error('Error updating note:', error);
+      if (error.message === 'Cannot update a note that is archived' || error.message === 'Cannot update a note that is in trash') {
+        res.status(400).json({ message: error.message });
+      } else {
+        res.status(500).json({ code: 500, message: 'Error updating note' });
+      }
+      next(error);
+    }
+  };
 
 //! TO ARCHIVE A NOTE
 public archiveNote = async (req: Request, res: Response, next: NextFunction) => {
@@ -196,6 +225,34 @@ public unarchiveNote = async (req: Request, res: Response, next: NextFunction) =
       res.status(500).json({ success: false, message: 'Failed to retrieve trashed notes' });
     }
   };
+
+//! Get a note by ID
+ public getNoteById = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const noteId = parseInt(req.params.noteId, 10);
+    if (isNaN(noteId)) {
+      return res.status(400).json({ message: 'Invalid note ID' });
+    }
+
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const note = await this.noteService.getNoteById(noteId, userId);
+
+    if (!note) {
+      return res.status(404).json({ message: 'Note not found or in Trash/Archived' });
+    }
+
+    res.status(200).json({ message: 'Note fetched successfully', data: note });
+  } catch (error) {
+    console.error('Error fetching note by ID:', error);
+    res.status(500).json({ message: 'Error fetching note', error });
+    next(error);
   }
+};
+
+}
 
 export default NoteController;

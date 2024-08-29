@@ -15,6 +15,9 @@ class NoteRoutes {
     //! Route to CREATE a new note (Auth required)
     this.router.post('/create', userAuth, this.noteController.createNote);
 
+    //! Route to update a note by ID (Auth required)
+    this.router.put('/:noteId/update', userAuth, this.noteController.updateNote);
+
     //! Route to archive a note (Auth required)
     this.router.post('/:noteId/archive', userAuth, this.noteController.archiveNote);
 
@@ -38,6 +41,9 @@ class NoteRoutes {
 
     //! Route to get all trashed notes (Auth required)
     this.router.get('/trashed', userAuth, getTrashedNotesCache, this.noteController.getTrashedNotes);
+
+    //! Route to get a note by ID (Auth required)
+    this.router.get('/:noteId/getNote', userAuth, this.noteController.getNoteById);
   };
 
   public getRoutes = (): IRouter => {

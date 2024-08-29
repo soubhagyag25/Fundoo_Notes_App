@@ -163,6 +163,173 @@
           }
         }
       },
+      "/notes/{noteId}/getNote": {
+     "get": {
+    "summary": "Get a note by ID",
+    "tags": ["Note"],
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "parameters": [
+      {
+        "name": "noteId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        },
+        "description": "ID of the note to retrieve"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Note retrieved successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Sample Note"
+                },
+                "content": {
+                  "type": "string",
+                  "example": "This is a sample note content."
+                },
+                "isArchived": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "isTrashed": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2024-08-29T12:34:56Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2024-08-29T12:34:56Z"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Invalid note ID",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid note ID"
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Note not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Note not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+   "/notes/{noteId}/update": {
+      "put": {
+     "summary": "Update a note",
+    "tags": ["Note"],
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "parameters": [
+      {
+        "name": "noteId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "example": "Updated Note Title"
+              },
+              "content": {
+                "type": "string",
+                "example": "Updated content of the note."
+              }
+            },
+            "required": ["title", "description"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Note updated successfully"
+      },
+      "400": {
+        "description": "Invalid input"
+      },
+      "404": {
+        "description": "Note not found"
+      }
+    }
+  }
+},
       "/notes/{noteId}/archive": {
         "post": {
           "summary": "Archive a note",

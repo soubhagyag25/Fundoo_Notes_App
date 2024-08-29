@@ -16,7 +16,43 @@ class NoteService {
       throw new Error('Error creating note');
     }
   };
-
+  //! Update a note by ID and user ID
+  public updateNote = async (noteId: number, userId: number, updateData: any) => {
+    try {
+      // Fetch the note based on ID and user ID
+      const note = await Note.findOne({ where: { id: noteId, CreatedBy: userId } });
+      
+      if (!note) {
+        console.warn(`Note not found or not authorized: noteId=${noteId}, userId=${userId}`);
+        return null; // Note not found or unauthorized
+      }
+      
+      // Check if the note is archived or in trash
+      if (note.isArchived) {
+        throw new Error('Cannot update a note that is archived');
+      }
+      
+      if (note.isInTrash) {
+        throw new Error('Cannot update a note that is in trash');
+      }
+      
+      // Update note fields
+      note.title = updateData.title || note.title;
+      note.description = updateData.description || note.description;
+      
+      // Save updated note
+      await note.save();
+      
+      // Cache updated note and invalidate relevant caches
+      await redisHelper.set(`note:${note.id}`, JSON.stringify(note));
+      await redisHelper.delete(`notes:${userId}`); // Invalidate user notes cache
+      
+      return note;
+    } catch (error) {
+      console.error(`Error updating note for noteId: ${noteId}, userId: ${userId}`, error);
+      throw error;
+    }
+  };
   //! Archive a note by ID and user ID
   public archiveNote = async (noteId: number, CreatedBy: number) => {
     try {
@@ -181,6 +217,29 @@ class NoteService {
       throw new Error('Error fetching trashed notes');
     }
   };
+
+//! Get a note by ID
+public async getNoteById(noteId: number, userId: number): Promise<Note | null> {
+  try {
+    const note = await Note.findOne({
+      where: {
+        id: noteId,
+        CreatedBy: userId,
+        isArchived: false,
+        isInTrash: false
+      },
+    });
+
+    if (!note) {
+      console.error(`Note with ID ${noteId} not found for user ${userId} or in Trash/Archived`);
+    }
+
+    return note || null;
+  } catch (error) {
+    console.error('Error fetching note by ID:', error.message, error.stack);
+    throw new Error('Error fetching note');
+  }
+};
 }
 
 export default NoteService;
