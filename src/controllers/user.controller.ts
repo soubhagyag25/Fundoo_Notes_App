@@ -3,30 +3,37 @@ import userService from '../services/user.service';
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { UserDTO } from '../interfaces/user.dto';
+import { sendEmailMessage } from '../producers/messageProducer'; 
 
 class UserController {
   public UserService = new userService();
-
-  //! Sign Up or creating a new user
-  public SignUp = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  
+   //! Sign Up or creating a new user
+   public SignUp = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
       const data = await this.UserService.SignUp(req.body);
-
-      // Converting Sequelize model instance to a plain object and remove the password
+  
       const userData = data.toJSON();
       delete userData.password;
-
+  
+      // Send a message to RabbitMQ with user information
+      await sendEmailMessage(
+        userData.email,
+        'Welcome to Fundoo Notes!',
+        'Thank you for signing up for Fundoo Notes. We are excited to have you on board!'
+      );
+  
       res.status(HttpStatus.CREATED).json({
         code: HttpStatus.CREATED,
         data: userData,
         message: 'User created successfully',
       });
     } catch (error) {
-      console.error('Error during user creation:', error); // Log any errors
+      console.error('Error during user creation:', error);
       next(error);
     }
   };
-
+  
   //! Login User
   public loginUser = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
